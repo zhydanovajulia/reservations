@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Reservation do
   let(:time) { DateTime.current }
-  let!(:reservation) { create :reservation, start_time: time+3.hour, end_time: time+7.hours, table_number: 10 }
+  let!(:reservation) { create :reservation, start_time: time+3.hours, end_time: time+7.hours, table_number: 10 }
   let(:reservation1) { build :reservation, start_time: time-3.hours, end_time: time+3.hours, table_number: 2 }
   let(:reservation2) { build :reservation, start_time: time+3.hours, end_time: time+1.hour, table_number: 2 }
 
@@ -22,6 +22,11 @@ describe Reservation do
   end
 
   it 'should not raise time intersection error' do
+    reservation.should be_valid
+  end
+
+  it 'should not raise time intersection error after update' do
+    reservation.update_attributes start_time: time+4.hours
     reservation.should be_valid
   end
 
